@@ -19,6 +19,14 @@ target 'vanilla' do
   # you should disable these next few lines.
   use_flipper!
    post_install do |installer|
+       installer.pods_project.targets.each do |target|
+           target.build_configurations.each do |config|
+             if config.name == 'Debug'
+               config.build_settings['OTHER_SWIFT_FLAGS'] = ['$(inherited)', '-Onone']
+               config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-Owholemodule'
+             end
+           end
+         end
         puts("Update debug pod settings to speed up build time")
         Dir.glob(File.join("Pods", "**", "Pods*{debug,Private}.xcconfig")).each do |file|
         File.open(file, 'a') { |f| f.puts "\nDEBUG_INFORMATION_FORMAT = dwarf" }
