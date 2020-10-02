@@ -18,9 +18,12 @@ target 'vanilla' do
   # Note that if you have use_frameworks! enabled, Flipper will not work and
   # you should disable these next few lines.
   use_flipper!
-  post_install do |installer|
-    flipper_post_install(installer)
-  end
+   post_install do |installer|
+        puts("Update debug pod settings to speed up build time")
+        Dir.glob(File.join("Pods", "**", "Pods*{debug,Private}.xcconfig")).each do |file|
+        File.open(file, 'a') { |f| f.puts "\nDEBUG_INFORMATION_FORMAT = dwarf" }
+        end
+      end
 end
 
 target 'vanilla-tvOS' do
@@ -31,3 +34,5 @@ target 'vanilla-tvOS' do
     # Pods for testing
   end
 end
+
+
