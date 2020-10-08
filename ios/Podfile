@@ -22,15 +22,15 @@ target 'vanilla' do
        installer.pods_project.targets.each do |target|
            target.build_configurations.each do |config|
              if config.name == 'Debug'
-               # config.build_settings['OTHER_SWIFT_FLAGS'] = ['$(inherited)', '-Onone']
-               # config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-Owholemodule'
+               config.build_settings['OTHER_SWIFT_FLAGS'] = ['$(inherited)', '-Onone']
+               config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-Owholemodule'
                config.build_settings['ENABLE_BITCODE'] = 'NO'
              end
            end
          end
-        # puts("Update debug pod settings to speed up build time")
-        # Dir.glob(File.join("Pods", "**", "Pods*{debug,Private}.xcconfig")).each do |file|
-        # File.open(file, 'a') { |f| f.puts "\nDEBUG_INFORMATION_FORMAT = dwarf" }
+        puts("Update debug pod settings to speed up build time")
+        Dir.glob(File.join("Pods", "**", "Pods*{debug,Private}.xcconfig")).each do |file|
+        File.open(file, 'a') { |f| f.puts "\nDEBUG_INFORMATION_FORMAT = dwarf" }
         end
       end
 end
